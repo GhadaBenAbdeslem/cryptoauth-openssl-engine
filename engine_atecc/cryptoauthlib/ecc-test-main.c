@@ -39,15 +39,17 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
-#include "cryptoauthlib.h"
-#include "tls/atcatls_tests.h"
+#include <cryptoauthlib.h>
+#include <tls/atcatls_tests.h>
+
+#define ATCA_HAL_I2C
 
 // Get a pointer to the default configuration based on the compiler switch
 #ifdef ATCA_HAL_KIT_CDC
 ATCAIfaceCfg* pCfg = &cfg_ecc508_kitcdc_default;
-#elif ATCA_HAL_KIT_HID
+#elif defined(ATCA_HAL_KIT_HID)
 ATCAIfaceCfg* pCfg = &cfg_ecc508_kithid_default;
-#elif ATCA_HAL_I2C
+#elif defined(ATCA_HAL_I2C)
 ATCAIfaceCfg* pCfg = &cfg_ateccx08a_i2c_default;
 #endif
 
