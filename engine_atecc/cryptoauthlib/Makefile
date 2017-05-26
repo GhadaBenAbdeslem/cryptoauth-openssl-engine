@@ -21,8 +21,9 @@ tgt_lib:
 tgt_test:
 	make -w -C test
 
+install:
+	for a in $(SUBDIRS); do $(MAKE) -C $$a $@; done
+
 clean:
 	rm -f *.o *.a
 	$(foreach subdir,$(basename $(SUBDIRS)),$(MAKE) -w -C $(subdir) clean;)
-
-

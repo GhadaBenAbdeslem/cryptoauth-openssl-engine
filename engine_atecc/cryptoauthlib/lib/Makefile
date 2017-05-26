@@ -18,6 +18,11 @@ all:	$(MODULES)
 	$(AR) -r $(LIBNAME).a $(MODULES) $(O_FILES)
 	$(RANLIB) $(LIBNAME).a
 
+.PHONY: install
+install: $(LIBNAME).a
+	install -d $(DESTDIR)/usr/lib/
+	install -m 0644 $(LIBNAME).a $(DESTDIR)/usr/lib/
+
 %.o: %.c
 	$(CC) $(CFLAGS) -o $@ -c $<
 
