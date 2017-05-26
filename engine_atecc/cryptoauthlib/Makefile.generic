@@ -1,5 +1,5 @@
 CWD:=	$(shell pwd)
-CFLAGS+=	-I. -I.. -I../.. -I../../.. -I../../../.. -I../../lib -I../lib -fPIC -g -O0 -DATCA_HAL_KIT_CDC -DATCAPRINTF
+CFLAGS+=	-I. -I.. -I../.. -I../../.. -I../../../.. -I../../lib -I../lib -fPIC -g -O0 -DATCA_HAL_I2C -DATCAPRINTF
 SRC:=	$(wildcard *.c)
 export CFLAGS
 
