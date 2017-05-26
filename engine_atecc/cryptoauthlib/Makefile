@@ -1,7 +1,7 @@
 CWD:=	$(shell pwd)
-CFLAGS= -I. -I../.. -fPIC -g -O0
+CFLAGS+= -I. -I../.. -fPIC -g -O0
 SRC:=	$(wildcard *.c)
-CC=             gcc
+export CFLAGS
 
 DIRECTORIES=	$(shell find . -maxdepth 1 ! -path . -type d)
 SUBDIRS=	$(DIRECTORIES)

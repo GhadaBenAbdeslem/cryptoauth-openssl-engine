@@ -1,7 +1,7 @@
 CWD:=	$(shell pwd)
-CFLAGS=	-I. -I.. -I../.. -I../../.. -I../../../.. -I../../lib -I../lib -fPIC -g -O0 -DATCA_HAL_KIT_CDC -DATCAPRINTF
+CFLAGS+=	-I. -I.. -I../.. -I../../.. -I../../../.. -I../../lib -I../lib -fPIC -g -O0 -DATCA_HAL_KIT_CDC -DATCAPRINTF
 SRC:=	$(wildcard *.c)
-CC=	gcc
+export CFLAGS
 
 DIRECTORIES=	$(shell find . -maxdepth 1 ! -path . -type d)
 SUBDIRS=	$(DIRECTORIES)

@@ -1,7 +1,6 @@
 LIBNAME=        libunity
 LIB=            $(LIBNAME).a
-AR=             ar r
-RANLIB=         ranlib
+AR+=            r
 
 include ../Makefile.generic
 
