@@ -27,37 +27,22 @@
  *
  ****************************************************************************/
 
-/***** #include-s *****/
-#include "atca_hal.h"
-#include <unistd.h>
+#ifndef HAL_I2CDEV_LINUX_H_
+#define HAL_I2CDEV_LINUX_H_
 
-/**
- * brief HAL function for us delay.
- *
- * @param delay Delay time in microseconds.
- */
-void atca_delay_us(uint32_t delay)
-{
-	usleep(delay);
-}
+#define MAX_BUSES    1
 
-/**
- * @brief Delays for a number of tens of microseconds.
- *
- * @param delay Delay time in tens of microseconds.
- */
-void atca_delay_10us(uint32_t delay)
-{
-	usleep(delay * 10);
-}
+ATCA_STATUS hal_i2c_discover_buses(int i2c_buses[], int max_buses);
+ATCA_STATUS hal_i2c_discover_devices(int busNum, ATCAIfaceCfg cfg[],
+				     int *found);
+ATCA_STATUS hal_i2c_init(void *hal, ATCAIfaceCfg *cfg);
+ATCA_STATUS hal_i2c_post_init(ATCAIface iface);
+ATCA_STATUS hal_i2c_send(ATCAIface iface, uint8_t *txdata, int txlength);
+ATCA_STATUS hal_i2c_receive(ATCAIface iface, uint8_t *rxdata,
+			    uint16_t *rxlength);
+ATCA_STATUS hal_i2c_wake(ATCAIface iface);
+ATCA_STATUS hal_i2c_idle(ATCAIface iface);
+ATCA_STATUS hal_i2c_sleep(ATCAIface iface);
+ATCA_STATUS hal_i2c_release(void *hal_data);
 
-/**
- * @brief HAL function for ms delay.
- *
- * @param delay Delay time in milliseconds.
- */
-void atca_delay_ms(uint32_t delay)
-{
-	/* We have no native ms-sleep call in Linux */
-	usleep(delay * 1000);
-}
+#endif /* HAL_I2CDEV_LINUX_H_ */
