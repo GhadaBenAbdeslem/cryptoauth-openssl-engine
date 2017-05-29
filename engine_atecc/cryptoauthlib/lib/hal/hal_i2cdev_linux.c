@@ -60,6 +60,17 @@
 #define WORD_ADDRESS_IDLE      0x02
 #define WORD_ADDRESS_COMMAND   0x03
 
+#define I2C_DEBUG 0
+
+#define debug_cond(cond, fmt, args...)                  \
+        do {                                            \
+                if (cond)                               \
+                        printf(fmt, ##args);            \
+        } while (0)
+
+#define debug(fmt, args...)                     \
+        debug_cond(I2C_DEBUG, fmt, ##args)
+
 /***** Global variables *****/
 static int i2c_bus_ref_ct = 0;   /*!< Total in-use count across buses. */
 
@@ -140,7 +151,7 @@ ATCA_STATUS i2c_send_command(ATCAIface iface, uint8_t command)
         };
 
 	if (ioctl(fd_i2c, I2C_RDWR, &msg_ctrl) < 0) {
-		printf("Error writing to I2C -- %s (%d)\n", strerror(errno),
+		debug("Error writing to I2C -- %s (%d)\n", strerror(errno),
 		       errno);
 		ret = ATCA_COMM_FAIL;
 	}
@@ -241,7 +252,7 @@ ATCA_STATUS hal_i2c_send(ATCAIface iface, uint8_t *txdata, int txlength)
 	msg.len = txlength + 1;
 
 	if (ioctl(fd_i2c, I2C_RDWR, &msg_ctrl) < 0) {
-                printf("CryptoAuth write error - %s (%d)\n", strerror(errno),
+                debug("CryptoAuth write error - %s (%d)\n", strerror(errno),
 		       errno);
                 ret = ATCA_COMM_FAIL;
 	}
@@ -330,7 +341,7 @@ ATCA_STATUS hal_i2c_wake(ATCAIface iface)
 	uint8_t expected[4] = {0x04, 0x11, 0x33, 0x43};
 
 	if (send_wakeup_pulse(cfg) != ATCA_SUCCESS) {
-		printf("Could not send wakeup command\n");
+		debug("Could not send wakeup command\n");
 		ret = ATCA_COMM_FAIL;
 		goto out;
 	}
