@@ -49,14 +49,25 @@
 
 /* if the number of these configurations grows large, we can #ifdef them based on required device support */
 
+
+/* Default I2C configuration */
+#ifndef ATCA_HAL_I2C_BUS
+#define ATCA_HAL_I2C_BUS 0
+#warning "Using default value for ATCA_HAL_I2C_BUS: 0"
+#endif
+
+#ifndef ATCA_HAL_I2C_SPEED
+#define ATCA_HAL_I2C_SPEED 400000
+#warning "Using default value for ATCA_HAL_I2C_SPEED: 400000"
+#endif
+
 /** \brief default configuration for an ECCx08A device */
 ATCAIfaceCfg cfg_ateccx08a_i2c_default = {
 	.iface_type				= ATCA_I2C_IFACE,
 	.devtype				= ATECC508A,
-	.atcai2c.slave_address	= 0xC0,
-	.atcai2c.bus			= 2,
-	.atcai2c.baud			= 400000,
-	//.atcai2c.baud = 100000,
+	.atcai2c.slave_address			= 0xC0,
+	.atcai2c.bus				= ATCA_HAL_I2C_BUS,
+	.atcai2c.baud				= ATCA_HAL_I2C_SPEED,
 	.wake_delay				= 800,
 	.rx_retries				= 20
 };
