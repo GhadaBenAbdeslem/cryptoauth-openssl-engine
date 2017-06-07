@@ -42,8 +42,9 @@
 #include <openssl/engine.h>
 #include <openssl/ossl_typ.h>
 #include "atca_status.h"
-#include "atcatls_cfg.h"
-#include "atcatls.h"
+#include "tls/atcatls_cfg.h"
+#include "tls/atcatls.h"
+#include "atcacert/atcacert_host_hw.h"
 
 //The engine version number. Must be updated for each engine release
 #define ECCX08_ENGINE_VERSION            "01.00.00"

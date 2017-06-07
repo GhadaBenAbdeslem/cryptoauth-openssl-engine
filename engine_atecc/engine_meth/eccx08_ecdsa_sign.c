@@ -43,7 +43,7 @@
 
 #include <crypto/ec/ec_lcl.h>
 
-#include <bn.h>
+#include <openssl/bn.h>
 #include "ecc_meth.h"
 
 #ifndef OPENSSL_NO_ECDSA

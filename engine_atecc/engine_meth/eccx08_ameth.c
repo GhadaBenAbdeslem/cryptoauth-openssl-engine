@@ -40,7 +40,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <assert.h>
-#include <engine.h>
+#include <openssl/engine.h>
 #include <openssl/x509.h>
 #include <openssl/ec.h>
 #include <openssl/bn.h>
@@ -48,9 +48,9 @@
     #include <openssl/cms.h>
 #endif
 #include <openssl/asn1t.h>
-#include <evp.h>
-#include <ossl_typ.h>
-#include <err.h>
+#include <openssl/evp.h>
+#include <openssl/ossl_typ.h>
+#include <openssl/err.h>
 #ifdef OPENSSL_DEVEL
     #include <crypto/include/internal/asn1_int.h>
 #endif // OPENSSL_DEVEL

@@ -42,8 +42,8 @@
 #ifdef OPENSSL_DEVEL
     #include <evp_int.h>
 #endif // OPENSSL_DEVEL
-#include <evp.h>
-#include <ossl_typ.h>
+#include <openssl/evp.h>
+#include <openssl/ossl_typ.h>
 #include <openssl/rand.h>
 #include "ecc_meth.h"
 
