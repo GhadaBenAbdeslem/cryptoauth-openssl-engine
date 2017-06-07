@@ -1,21 +1,12 @@
-CC=		gcc
 CFLAGS_EXT=
 CWD:=		$(shell pwd)
-OPENSSL_VER?=   _1_0_2
-OPENSSL=	openssl$(OPENSSL_VER)
 #HW?= 		-DECC_DEBUG
 HW?=		-DUSE_ECCX08 -DECC_DEBUG
 
 CFLAGS= -I. -I.. -I../.. \
-	-I../../$(OPENSSL) \
-        -I../../$(OPENSSL)/include \
-        -I../../$(OPENSSL)/include/openssl \
-        -I../../$(OPENSSL)/crypto/crypto \
-        -I../../$(OPENSSL)/crypto/engine \
-        -I../../$(OPENSSL)/crypto/include/internal \
 	-I../cryptoauthlib/lib \
 	-I../cryptoauthlib/lib/tls \
-	-fPIC -g -O0 $(HW) -DATCA_HAL_KIT_CDC $(CFLAGS_EXT)
+	-fPIC -g -O0 $(HW) $(CFLAGS_EXT)
 
 SRC=	$(wildcard *.c)
 
@@ -25,12 +16,11 @@ MODULES=	$(patsubst %.c,%.o,$(SRC))
 LIBNAME=	libeccx08_meth
 
 all:	$(MODULES) Makefile
-	ar -r $(LIBNAME).a $(MODULES)
-	ranlib $(LIBNAME).a
+	$(AR) -r $(LIBNAME).a $(MODULES)
+	$(RANLIB) $(LIBNAME).a
 
 %.o: %.c
-	@echo "Compiling $<. CFLAGS = $(CFLAGS)"
-	@$(CC) $(CFLAGS) -o $@ -c $<
+	$(CC) $(CFLAGS) -o $@ $(LDFLAGS) -c $<
 
 clean:
 	rm -f *.o *.a

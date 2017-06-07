@@ -1,6 +1,4 @@
-OPENSSL_VER?=   _1_0_2
 CFLAGS_EXT=
-OPENSSL=	openssl$(OPENSSL_VER)
 LIBNAME=	libateccx08
 SRC=		engine_atecc_binder.c
 OBJ=		engine_atecc_binder.o 
@@ -10,18 +8,18 @@ HW?=		-DUSE_ECCX08 -DECC_DEBUG
 #HW?=		-DUSE_SW_ECDHE -DUSE_ECCX08 -DECC_DEBUG
 #HW?=		-DUSE_SLOT2_FOR_CERT -DUSE_ECCX08 -DECC_DEBUG
 
-CC=		gcc
 PIC=		-fPIC
-CFLAGS=		-g -O0 -Iengine_meth -Icryptoauthlib/test -Icryptoauthlib/lib \
+CFLAGS+=	-Iengine_meth -Icryptoauthlib/test -Icryptoauthlib/lib \
 		-I./cryptoauthlib -Icryptoauthlib/lib/tls \
-		-I../install_dir/include -I../../../include -I../$(OPENSSL) \
-		$(PIC) -DENGINE_DYNAMIC_SUPPORT -DFLAT_INC -DATCA_HAL_KIT_CDC \
+		$(PIC) -DENGINE_DYNAMIC_SUPPORT -DFLAT_INC \
 		$(HW) $(CFLAGS_EXT)
-AR=		ar r
-RANLIB=		ranlib
 
 LIB=		$(LIBNAME).a
 SHLIB=		$(LIBNAME).so
+
+export DESTDIR
+export CFLAGS
+export LDFLAGS
 
 all:
 		@echo 'Please choose a system to build on:'
@@ -47,7 +45,10 @@ clean:
 	make -w -C cryptoauthlib clean
 
 install:
-	cp -f $(SHLIB) ../install_dir/lib/engines
+	make -w -C cryptoauthlib install
+	
+	install -d $(DESTDIR)/usr/lib
+	install $(SHLIB) $(DESTDIR)/usr/lib
 
 FORCE.update:
 update:		FORCE.update
@@ -63,17 +64,17 @@ hpux64:		$(SHLIB).hpux64
 aix:		$(SHLIB).aix
 
 $(LIB):		$(OBJ)
-		$(AR) $(LIB) $(OBJ)
+		$(AR) -r $(LIB) $(OBJ)
 		- $(RANLIB) $(LIB)
 LIBAMETH=engine_meth/libeccx08_meth.a
 
 LINK_SO=	\
-  ld -r -o $(LIBNAME).o $$ALLSYMSFLAGS $(LIB) $(LIBAMETH) && \
-  (nm -Pg $(LIBNAME).o | grep ' [BDT] ' | cut -f1 -d' ' > $(LIBNAME).exp; \
-   $$SHAREDCMD $$SHAREDFLAGS -o $(SHLIB) $(LIBNAME).o -L ../install_dir/lib -lcrypto -lc \
+  $(LD) -r -o $(LIBNAME).o $$ALLSYMSFLAGS $(LIB) $(LIBAMETH) && \
+  ($(NM) -Pg $(LIBNAME).o | grep ' [BDT] ' | cut -f1 -d' ' > $(LIBNAME).exp; \
+   $$SHAREDCMD $$SHAREDFLAGS -o $(SHLIB) $(LIBNAME).o $(LDFLAGS) -L ../install_dir/lib -lcrypto -lc \
    -Lengine_meth -Lcryptoauthlib/lib -leccx08_meth -lcryptoauth -lm -lrt)
 
-$(SHLIB).gnu:	$(LIB) ecc-test tgt_engine_meth
+$(SHLIB).gnu:	$(LIB) tgt_engine_meth tgt_cryptoauthlib
 		ALLSYMSFLAGS='--whole-archive' \
 		SHAREDFLAGS='-shared -Wl,-soname=$(SHLIB)' \
 		SHAREDCMD='$(CC)'; \
