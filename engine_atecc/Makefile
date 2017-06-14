@@ -21,17 +21,7 @@ export DESTDIR
 export CFLAGS
 export LDFLAGS
 
-all:
-		@echo 'Please choose a system to build on:'
-		@echo ''
-		@echo 'tru64:    Tru64 Unix, Digital Unix, Digital OSF/1'
-		@echo 'solaris:  Solaris'
-		@echo 'irix:     IRIX'
-		@echo 'hpux32:   32-bit HP/UX'
-		@echo 'hpux64:   64-bit HP/UX'
-		@echo 'aix:      AIX'
-		@echo 'gnu:      Generic GNU-based system (gcc and GNU ld)'
-		@echo ''
+all: gnu
 
 tgt_cryptoauthlib:
 	make -w -C cryptoauthlib HW='$(HW)' 
