@@ -9,10 +9,8 @@ HW?=		-DUSE_ECCX08 -DECC_DEBUG
 #HW?=		-DUSE_SLOT2_FOR_CERT -DUSE_ECCX08 -DECC_DEBUG
 
 PIC=		-fPIC
-CFLAGS+=	-Iengine_meth -Icryptoauthlib/test -Icryptoauthlib/lib \
-		-I./cryptoauthlib -Icryptoauthlib/lib/tls \
-		$(PIC) -DENGINE_DYNAMIC_SUPPORT -DFLAT_INC \
-		$(HW) $(CFLAGS_EXT)
+CFLAGS+=	-Iengine_meth $(PIC) -DENGINE_DYNAMIC_SUPPORT \
+		-DFLAT_INC $(HW) $(CFLAGS_EXT)
 
 LIB=		$(LIBNAME).a
 SHLIB=		$(LIBNAME).so
@@ -23,20 +21,14 @@ export LDFLAGS
 
 all: gnu
 
-tgt_cryptoauthlib:
-	make -w -C cryptoauthlib HW='$(HW)' 
-
 tgt_engine_meth:
 	make -w -C engine_meth HW='$(HW)' CFLAGS_EXT='$(CFLAGS_EXT)'
 
 clean:
 	rm -f *.o *.a *.so* *.exp
 	make -w -C engine_meth clean
-	make -w -C cryptoauthlib clean
 
 install:
-	make -w -C cryptoauthlib install
-	
 	install -d $(DESTDIR)/usr/lib
 	install $(SHLIB) $(DESTDIR)/usr/lib
 
@@ -62,9 +54,9 @@ LINK_SO=	\
   $(LD) -r -o $(LIBNAME).o $$ALLSYMSFLAGS $(LIB) $(LIBAMETH) && \
   ($(NM) -Pg $(LIBNAME).o | grep ' [BDT] ' | cut -f1 -d' ' > $(LIBNAME).exp; \
    $$SHAREDCMD $$SHAREDFLAGS -o $(SHLIB) $(LIBNAME).o $(LDFLAGS) -L ../install_dir/lib -lcrypto -lc \
-   -Lengine_meth -Lcryptoauthlib/lib -leccx08_meth -lcryptoauth -lm -lrt)
+   -Lengine_meth -leccx08_meth -lcryptoauth -lm -lrt)
 
-$(SHLIB).gnu:	$(LIB) tgt_engine_meth tgt_cryptoauthlib
+$(SHLIB).gnu:	$(LIB) tgt_engine_meth
 		ALLSYMSFLAGS='--whole-archive' \
 		SHAREDFLAGS='-shared -Wl,-soname=$(SHLIB)' \
 		SHAREDCMD='$(CC)'; \

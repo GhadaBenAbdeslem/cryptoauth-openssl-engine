@@ -4,8 +4,6 @@ CWD:=		$(shell pwd)
 HW?=		-DUSE_ECCX08 -DECC_DEBUG
 
 CFLAGS= -I. -I.. -I../.. \
-	-I../cryptoauthlib/lib \
-	-I../cryptoauthlib/lib/tls \
 	-fPIC -g -O0 $(HW) $(CFLAGS_EXT)
 
 SRC=	$(wildcard *.c)
