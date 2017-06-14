@@ -3,8 +3,7 @@ CWD:=		$(shell pwd)
 #HW?= 		-DECC_DEBUG
 HW?=		-DUSE_ECCX08 -DECC_DEBUG
 
-CFLAGS= -I. -I.. -I../.. \
-	-fPIC -g -O0 $(HW) $(CFLAGS_EXT)
+CFLAGS+= -fPIC -g -O0 $(HW) -DATCA_HAL_I2C $(CFLAGS_EXT)
 
 SRC=	$(wildcard *.c)
 
@@ -14,7 +13,7 @@ MODULES=	$(patsubst %.c,%.o,$(SRC))
 LIBNAME=	libeccx08_meth
 
 all:	$(MODULES) Makefile
-	$(AR) -r $(LIBNAME).a $(MODULES)
+	$(AR) $(LIBNAME).a $(MODULES)
 	$(RANLIB) $(LIBNAME).a
 
 %.o: %.c

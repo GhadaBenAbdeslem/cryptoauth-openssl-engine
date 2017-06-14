@@ -3,13 +3,10 @@ LIBNAME=	libateccx08
 SRC=		engine_atecc_binder.c
 OBJ=		engine_atecc_binder.o 
 HEADER=		ecc-crypto_openssl.h
-#HW?= 		-DECC_DEBUG
 HW?=		-DUSE_ECCX08 -DECC_DEBUG
-#HW?=		-DUSE_SW_ECDHE -DUSE_ECCX08 -DECC_DEBUG
-#HW?=		-DUSE_SLOT2_FOR_CERT -DUSE_ECCX08 -DECC_DEBUG
 
 PIC=		-fPIC
-CFLAGS+=	-Iengine_meth $(PIC) -DENGINE_DYNAMIC_SUPPORT \
+CFLAGS+=	-Iengine_meth -I $(TOP) -I ../../.. -I $(TOP)/include -I../../../include $(PIC) -DENGINE_DYNAMIC_SUPPORT -DATCA_HAL_I2C \
 		-DFLAT_INC $(HW) $(CFLAGS_EXT)
 
 LIB=		$(LIBNAME).a
@@ -29,8 +26,8 @@ clean:
 	make -w -C engine_meth clean
 
 install:
-	install -d $(DESTDIR)/usr/lib
-	install $(SHLIB) $(DESTDIR)/usr/lib
+	install -d $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/engines/
+	install -m 555 $(SHLIB) $(INSTALL_PREFIX)$(INSTALLTOP)/$(LIBDIR)/engines/
 
 FORCE.update:
 update:		FORCE.update
@@ -46,15 +43,15 @@ hpux64:		$(SHLIB).hpux64
 aix:		$(SHLIB).aix
 
 $(LIB):		$(OBJ)
-		$(AR) -r $(LIB) $(OBJ)
+		$(AR) $(LIB) $(OBJ)
 		- $(RANLIB) $(LIB)
 LIBAMETH=engine_meth/libeccx08_meth.a
 
 LINK_SO=	\
   $(LD) -r -o $(LIBNAME).o $$ALLSYMSFLAGS $(LIB) $(LIBAMETH) && \
   ($(NM) -Pg $(LIBNAME).o | grep ' [BDT] ' | cut -f1 -d' ' > $(LIBNAME).exp; \
-   $$SHAREDCMD $$SHAREDFLAGS -o $(SHLIB) $(LIBNAME).o $(LDFLAGS) -L ../install_dir/lib -lcrypto -lc \
-   -Lengine_meth -leccx08_meth -lcryptoauth -lm -lrt)
+   $$SHAREDCMD $$SHAREDFLAGS -o $(SHLIB) $(LIBNAME).o $(TARGET_LDFLAGS) -lc \
+    -Lengine_meth -leccx08_meth -lcryptoauth -lm -lrt)
 
 $(SHLIB).gnu:	$(LIB) tgt_engine_meth
 		ALLSYMSFLAGS='--whole-archive' \
@@ -103,7 +100,7 @@ depend:
 		sed -e '/^# DO NOT DELETE.*/,$$d' < Makefile > Makefile.tmp
 		echo '# DO NOT DELETE THIS LINE -- make depend depends on it.' >> Makefile.tmp
 		$(CC) -M $(CFLAGS) $(SRC) >> Makefile.tmp
-		perl ../../../util/clean-depend.pl < Makefile.tmp > Makefile.new
+		perl ../../util/clean-depend.pl < Makefile.tmp > Makefile.new
 		rm -f Makefile.tmp Makefile
 		mv Makefile.new Makefile
 
