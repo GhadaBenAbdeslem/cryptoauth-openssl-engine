@@ -50,7 +50,7 @@ LIBAMETH=engine_meth/libeccx08_meth.a
 LINK_SO=	\
   $(LD) -r -o $(LIBNAME).o $$ALLSYMSFLAGS $(LIB) $(LIBAMETH) && \
   ($(NM) -Pg $(LIBNAME).o | grep ' [BDT] ' | cut -f1 -d' ' > $(LIBNAME).exp; \
-   $$SHAREDCMD $$SHAREDFLAGS -o $(SHLIB) $(LIBNAME).o $(TARGET_LDFLAGS) -lc \
+   $$SHAREDCMD $$SHAREDFLAGS -o $(SHLIB) $(LIBNAME).o ../../crypto/ec/ec_ameth.o $(TARGET_LDFLAGS) -lc \
     -Lengine_meth -leccx08_meth -lcryptoauth -lm -lrt)
 
 $(SHLIB).gnu:	$(LIB) tgt_engine_meth
