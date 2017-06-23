@@ -1,10 +1,10 @@
-#!/bin/bash
+#!/bin/sh
 set -e
 set -x
 cd $(dirname $0)
 TREE_TOP=..
-export LD_LIBRARY_PATH=$TREE_TOP/install_dir/lib
-export LD_PRELOAD=/lib/x86_64-linux-gnu/libpthread.so.0
+export LD_LIBRARY_PATH=/lib
+export LD_PRELOAD=/lib/libpthread.so.0
 PORT=49917
 
 # Certificate names

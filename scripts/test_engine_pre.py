@@ -173,7 +173,7 @@ def pkill_openssl():
    print cmd
    os.system(cmd)
    time.sleep(1)
-   cmd = 'ps aux | grep openssl'
+   cmd = 'ps l | grep openssl'
    print cmd
    os.system(cmd)
 

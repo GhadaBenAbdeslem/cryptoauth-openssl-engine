@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # If Atmel delievers the openssl key file then it is safer to use NEW_KEY=0
 # If the openssl key file is not delievered then this script may be called
 # with the NEW_KEY=1. If the device key in ATECC08 hardware wasn't locked

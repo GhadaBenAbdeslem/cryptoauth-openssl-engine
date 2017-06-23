@@ -1,14 +1,14 @@
-#!/bin/bash
+#!/bin/sh
 cd $(dirname $0)
 cd ..
 TREE_TOP=${PWD}
 CERTSTORE=$TREE_TOP/certstore
 SCRIPTS=$TREE_TOP/scripts
-BIN_DIR=$TREE_TOP/install_dir/bin
+BIN_DIR=/usr/bin
 EX_DIR=$TREE_TOP/client-server
 
-export LD_LIBRARY_PATH=$TREE_TOP/install_dir/lib
-export LD_PRELOAD=/lib/x86_64-linux-gnu/libpthread.so.0
+export LD_LIBRARY_PATH=/lib
+export LD_PRELOAD=/lib/libpthread.so.0
 
 CMD_EX="${EX_DIR}/exchange-tls12"
 

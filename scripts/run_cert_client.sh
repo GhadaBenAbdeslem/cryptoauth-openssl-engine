@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # With NEW_KEY=1 the script requires to enter the password 3 times. 
 # It is required because by default "openssl req"
 # cannot do it without the password. 

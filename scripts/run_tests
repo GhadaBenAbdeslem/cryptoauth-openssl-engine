@@ -366,10 +366,9 @@ if __name__ == "__main__":
    base_dir = '.'
    log_dir = 'log'
    fname_drv = '%s/runit.sh' % (base_dir)
-   write_test_script(fname_drv,'#!/bin/bash',init=True)
+   write_test_script(fname_drv,'#!/bin/sh',init=True)
    write_test_script(fname_drv,'set -x')
    write_test_script(fname_drv,'mkdir -p %s/%s' % (base_dir,log_dir))
-   write_test_script(fname_drv,'sudo chmod a+rw /dev/ttyACM0')
    all_results = {}
 
    #
