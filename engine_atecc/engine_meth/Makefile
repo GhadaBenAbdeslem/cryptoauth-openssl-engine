@@ -3,7 +3,7 @@ CWD:=		$(shell pwd)
 #HW?= 		-DECC_DEBUG
 HW?=		-DUSE_ECCX08 -DECC_DEBUG
 
-CFLAGS+= -fPIC -g -O0 $(HW) -DATCA_HAL_I2C $(CFLAGS_EXT)
+CFLAGS += -fPIC -g -O0 $(HW) -DATCA_HAL_I2C $(CFLAGS_EXT)
 
 SRC=	$(wildcard *.c)
 
@@ -17,7 +17,7 @@ all:	$(MODULES) Makefile
 	$(RANLIB) $(LIBNAME).a
 
 %.o: %.c
-	$(CC) $(CFLAGS) -o $@ $(LDFLAGS) -c $<
+	$(CC) $(CFLAGS) -o $@ -c $<
 
 clean:
 	rm -f *.o *.a

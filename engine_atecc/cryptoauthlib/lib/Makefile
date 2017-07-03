@@ -22,8 +22,9 @@ all:	$(MODULES)
 
 .PHONY: install
 install: $(LIBNAME).a
-	install -d $(DESTDIR)/usr/lib/
+	install -d $(DESTDIR)/usr/lib/pkgconfig
 	install -m 0644 $(LIBNAME).a $(DESTDIR)/usr/lib/
+	install -m 0644 cryptoauthlib.pc $(DESTDIR)/usr/lib/pkgconfig/	
 
 	install -d $(INCLUDE_PATH)/atcacert $(INCLUDE_PATH)/basic $(INCLUDE_PATH)/hal $(INCLUDE_PATH)/tls
 	install -m 0644 atcacert/*.h $(INCLUDE_PATH)/atcacert

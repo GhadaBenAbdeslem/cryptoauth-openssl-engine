@@ -1,0 +1,11 @@
+prefix=/usr
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: cryptoauthlib
+Description: Atmel Cryptochip library for ATECC508A
+Version:1.0
+
+Libs: -L${libdir} -lcryptoauth
+Cflags: -I${includedir} -I${includedir}/cryptoauthlib -I${includedir}/cryptoauthlib/tls

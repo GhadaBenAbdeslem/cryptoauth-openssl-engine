@@ -12,6 +12,9 @@ CFLAGS+=	-Iengine_meth -I $(TOP) -I ../../.. -I $(TOP)/include -I../../../includ
 LIB=		$(LIBNAME).a
 SHLIB=		$(LIBNAME).so
 
+CFLAGS +=$(shell pkg-config --cflags cryptoauthlib)
+LDLIBS +=$(shell pkg-config --libs --static cryptoauthlib)
+
 export DESTDIR
 export CFLAGS
 export LDFLAGS
@@ -51,7 +54,7 @@ LINK_SO=	\
   $(LD) -r -o $(LIBNAME).o $$ALLSYMSFLAGS $(LIB) $(LIBAMETH) && \
   ($(NM) -Pg $(LIBNAME).o | grep ' [BDT] ' | cut -f1 -d' ' > $(LIBNAME).exp; \
    $$SHAREDCMD $$SHAREDFLAGS -o $(SHLIB) $(LIBNAME).o ../../crypto/ec/ec_ameth.o $(TARGET_LDFLAGS) -lc \
-    -Lengine_meth -leccx08_meth -lcryptoauth -lm -lrt)
+    -Lengine_meth -leccx08_meth $(LDLIBS) -lm -lrt)
 
 $(SHLIB).gnu:	$(LIB) tgt_engine_meth
 		ALLSYMSFLAGS='--whole-archive' \
